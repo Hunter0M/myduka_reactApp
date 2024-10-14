@@ -1,7 +1,5 @@
 import axios from "axios";
-import { useContext, useState } from "react";
-// import { NewUsers } from "../Context/Context";
-import { User } from "../Context/Context";
+import { useState } from "react";
 
 function RegisterTestForm() {
   const [name, setName] = useState("");
@@ -11,12 +9,10 @@ function RegisterTestForm() {
   // const [accept, setAccept] = useState(false);
   const [emailError, setEmailError] = useState("");
 
-  const userNow = useContext(User);
-
   async function Submit(e) {
     let send = true;
     e.preventDefault();
-    setAccept(true);
+    // setAccept(true);
     if (name === "" || password.length < 8 || Cpassword !== password) {
       send = false;
     } else send = true;
@@ -28,7 +24,6 @@ function RegisterTestForm() {
           user_password: password,
           confirm_password: Cpassword,
         });
-
       }
     } catch (err) {
       setEmailError(err.response.status);

@@ -17,7 +17,7 @@ function Login() {
   async function Submit(e) {
     let send = true;
     e.preventDefault();
-    setAccept(true);
+    // setAccept(true);
     if ( password.length < 8 ) {
       send = false;
     } else send = true;

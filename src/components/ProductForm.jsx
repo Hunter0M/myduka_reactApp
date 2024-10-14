@@ -1,13 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
-
 import { Typography } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 function ProductForm() {
-  const url = "http://127.0.0.1:5000/product";
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNb2hhIiwiZXhwIjoxNzI4MzI5OTEzfQ.jzrI9nPQE5EvPILeUWDvyMKhcofuQUEjmB5oUdLt4Bc";
+  const url = import.meta.env.VITE_APP_URL; // Accessing the URL
+  const token = import.meta.env.VITE_APP_TOKEN; // Accessing the token
+
   const [product, setProduct] = useState({
     name: "",
     buying_price: "",
@@ -24,7 +23,7 @@ function ProductForm() {
   const postProduct = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(url, product, {
+      const response = await axios.post(url +"product", product, {
         headers: {
           Authorization: token,
         },
@@ -55,7 +54,7 @@ function ProductForm() {
             onClick={(e) => e.stopPropagation()}
           >
             <form className="space-y-4" onSubmit={postProduct}>
-              <Typography  variant="h4" color="blue-gray">
+              <Typography variant="h4" color="blue-gray">
                 <p className="text-2xl ">Manage Item</p>
                 <XMarkIcon
                   className=" -mt-6 ml-[92%] h-6 w-6  cursor-pointer rounded-md hover:bg-gray-200"
@@ -86,16 +85,11 @@ function ProductForm() {
                   size="lg"
                   name="name"
                   className=" border border-gray-900 rounded-lg w-[95%] h-11 placeholder:pl-6 "
-                  containerProps={{
-                    className: "!min-w-full",
-                  }}
-                  labelProps={{
-                    className: "hidden",
-                  }}
+                  
+                  
                   type="text"
                   placeholder="eg. White Shoes"
                   onChange={handlChange}
-
                 />
               </div>
 
@@ -120,18 +114,12 @@ function ProductForm() {
                 <input
                   color="gray"
                   size="lg"
-                  name="name"
+                  name="buying_price"
                   className="ml- border border-gray-900 rounded-lg w-[95%] h-11 placeholder:pl-6 "
-                  containerProps={{
-                    className: "!min-w-full",
-                  }}
-                  labelProps={{
-                    className: "hidden",
-                  }}
+                  
                   type="number"
                   placeholder="Enter buying price"
                   onChange={handlChange}
-
                 />
               </div>
 
@@ -156,18 +144,12 @@ function ProductForm() {
                 <input
                   color="gray"
                   size="lg"
-                  name="name"
+                  name="selling_price"
                   className="ml- border border-gray-900 rounded-lg w-[95%] h-11 placeholder:pl-6 "
-                  containerProps={{
-                    className: "!min-w-full",
-                  }}
-                  labelProps={{
-                    className: "hidden",
-                  }}
+                 
                   type="number"
                   placeholder="Enter selling price"
                   onChange={handlChange}
-
                 />
               </div>
 
@@ -192,18 +174,12 @@ function ProductForm() {
                 <input
                   color="gray"
                   size="lg"
-                  name="name"
+                  name="stock_quantity"
                   className="ml- border border-gray-900 rounded-lg w-[95%] h-11 placeholder:pl-6 "
-                  containerProps={{
-                    className: "!min-w-full",
-                  }}
-                  labelProps={{
-                    className: "hidden",
-                  }}
+                  
                   type="number"
                   placeholder="Enter stock quantity"
                   onChange={handlChange}
-
                 />
               </div>
 
