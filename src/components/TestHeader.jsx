@@ -1,10 +1,11 @@
 import React from "react";
 import { Menu, Xmark } from "iconoir-react";
 import { Button } from "@material-tailwind/react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const TestHeader = () => {
   const [openNav, setOpenNav] = React.useState(false);
+  const location = useLocation(); // I am using the useLocation hook to get the current location.
 
   React.useEffect(() => {
     window.addEventListener(
@@ -14,9 +15,14 @@ const TestHeader = () => {
     );
   }, []);
 
+  //I used this useEffect to see when the location changes, it sets openNav to false, effectively closing the menu bar.
+  React.useEffect(() => {
+    setOpenNav(false);
+  }, [location]);
+
   return (
     <header className="bg-white lg:py-8">
-      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 ">
+      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-1 lg:-mb-6 lg:-mt-2 ">
         {/* <!-- lg+ --> */}
         <nav
           className="relative flex items-center px-2
@@ -62,7 +68,7 @@ const TestHeader = () => {
             </Link>
 
             <Link
-              to="/product"
+              to="/products"
               title=""
               className="py-2 text-base font-medium transition-all duration-200 ml-10 hover:text-blue-600 focus:text-blue-600"
             >
@@ -135,7 +141,7 @@ const TestHeader = () => {
           </Link>
 
           <Link
-            to="/product"
+            to="/products"
             title=""
             className="py-2 text-base font-medium transition-all duration-200 hover:text-blue-600 focus:text-blue-600"
           >

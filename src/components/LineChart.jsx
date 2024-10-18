@@ -21,7 +21,7 @@ export default function BasicLineChart() {
   },[])
   
 
-  const xAxisData = data.day_sales.map(item=>item.date)
+  const xAxisData = data.day_sales.map(item => item.date).sort();
   const salesseries = data.day_sales.map(item=>item.total_sales)
   const profitseries = data.day_profit.map(item=>item.profit)
 

@@ -2,12 +2,14 @@ import axios from "axios";
 import { useState } from "react";
 
 function RegisterTestForm() {
+  const url = import.meta.env.VITE_APP_URL; // Accessing the URL
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [Cpassword, setPasswordR] = useState("");
   // const [accept, setAccept] = useState(false);
-  const [emailError, setEmailError] = useState("");
+  // const [emailError, setEmailError] = useState("");
 
   async function Submit(e) {
     let send = true;
@@ -18,15 +20,16 @@ function RegisterTestForm() {
     } else send = true;
     try {
       if (send) {
-        const response = await axios.post("http://127.0.0.1:5000/user", {
+        const response = await axios.post(url + "register",  {
           username: name,
           user_email: email,
           user_password: password,
           confirm_password: Cpassword,
         });
+      console.log("Response:", response.data);
       }
-    } catch (err) {
-      setEmailError(err.response.status);
+    } catch (error) {
+      console.log(" Error registering user:", error);
     }
   }
 

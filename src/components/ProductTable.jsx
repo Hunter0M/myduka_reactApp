@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-const ProductTable = () => {
-  const [productdata, fetchProductData] = useState([]);
+import DataTable from "react-data-table-component";
+import { Link } from 'react-router-dom';
  
+const ProductTable = () => {
   const url = import.meta.env.VITE_APP_URL; // Accessing the URL
   const token = import.meta.env.VITE_APP_TOKEN; // Accessing the token
 
+  const [productdata, fetchProductData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const fetchProducts = async () => {
+    setLoading(true);
     try {
-      const response = await axios.get(url+ "product", {
+      const response = await axios.get(url + "product", {
         headers: {
           Authorization: token,
         },
@@ -17,6 +22,8 @@ const ProductTable = () => {
       fetchProductData(response.data.products);
     } catch (e) {
       console.log("Error fetching products:", e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -24,45 +31,71 @@ const ProductTable = () => {
     fetchProducts();
   }, []);
 
+  
+
+  const columns = [
+    { name: "ID", selector: (row) => row.id, sortable: true },
+    { name: "Product Name", selector: (row) => row.name, sortable: true },
+    {
+      name: "Buying Price",
+      selector: (row) => row.buying_price,
+      sortable: true,
+    },
+    {
+      name: "Selling Price",
+      selector: (row) => row.selling_price,
+      sortable: true,
+    },
+    {
+      name: "Stock Quantity",
+      selector: (row) => row.stock_quantity,
+      sortable: true,
+    },
+    {
+      name: "Actions",
+      cell: (row) => (
+        <Link to={`/update/${row.id}`}>
+          <button
+            className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Update
+          </button>
+        </Link>
+      ),
+    },
+  ];
+
+  // Filtered data based on search term
+  const filteredData = productdata.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
   return (
     <div>
-      <h4>My Duka Products </h4>
-
-      <div>
-        <table className="table border">
-          <thead>
-            <tr>
-              <td>ID</td>
-              <td>Product Name</td>
-              <td>Buying Price</td>
-              <td>Selling Price</td>
-              <td>Stock Quantity</td>
-            </tr>
-          </thead>
-          {productdata.map((product, index) => (
-            <tbody className="border" key={product.id}>
-              <tr>
-                <td>{product.id}</td>
-                <td>{product.name}</td>
-                <td>{product.buying_price}</td>
-                <td>{product.selling_price}</td>
-                <td>{product.stock_quantity}</td>
-              </tr>
-            </tbody>
-          ))}
-        </table>
+      <h4>My Duka Products</h4>
+      <div className="border border-gray-300 rounded-md p-4 mr-10 mb-10 shadow-md">
+      <div className="flex justify-between mb-4">
+        <h2 className="text-lg font-bold">Product Table</h2>
+        <input
+          type="search"
+          value={searchTerm}
+          onChange={handleSearch}
+          placeholder="Search by Product Name"
+          className="w-48 pl-2 py-2 text-sm text-gray-700 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
       </div>
-
-      {/* {productdata.map(product=>(
-        <div key={product.id} >
-            <p>Product Name : {product.name}</p>
-            <p>Buying Price : {product.buying_price}</p>
-            <p>Selling Price : {product.selling_price}</p>
-            <p>Stock Quantity : {product.stock_quantity}</p> <br /><br />
-        </div>
-      )
-
-      )} */}
+        <DataTable 
+          columns={columns}
+          data={filteredData}
+          pagination
+          progressPending={loading}
+          highlightOnHover
+          striped
+        />
+      </div>
     </div>
   );
 };

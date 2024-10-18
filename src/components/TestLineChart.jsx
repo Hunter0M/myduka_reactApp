@@ -26,13 +26,15 @@ const LineChartComponent = () => {
       profit: dayProfit[index].profit,
     }));
 
+    // Sort the data by date in ascending order
+    mergedData.sort((a, b) => new Date(a.date) - new Date(b.date));
+
     setData(mergedData);
   };
 
   React.useEffect(() => {
     fetchDayData();
   }, []);
-
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
@@ -52,7 +54,6 @@ const LineChartComponent = () => {
     }
   };
 
-
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart
@@ -64,8 +65,8 @@ const LineChartComponent = () => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="date" />
-        
+        <XAxis dataKey="date" reversed={true} />
+
         <YAxis />
         <Tooltip content={<CustomTooltip />} />
         <Legend />
